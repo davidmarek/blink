@@ -1,5 +1,6 @@
 import usb.core
 import random
+import time
 
 
 class Blink(object):
@@ -21,15 +22,23 @@ class Blink(object):
         if self.dev is None:
             raise ValueError('Device not found.')
 
-    def set_color_name(self, color):
-        self.set_color(*self.colors[color])
+    def set_color(self, color):
+        if isinstance(color, str):
+            color = self.colors[color]
 
-    def set_color(self, r, g, b):
+        r, g, b = color
+
         self.dev.ctrl_transfer(0x01 << 5, 0x09, 0, r)
         self.dev.ctrl_transfer(0x01 << 5, 0x09, 0, g)
         self.dev.ctrl_transfer(0x01 << 5, 0x09, 0, b)
         self.dev.ctrl_transfer(0x01 << 5, 0x09, 0, ord('\n'))
         self.read()
+
+    def blink(self, color, delay=0.01):
+        self.set_color(color)
+        time.sleep(delay)
+        self.set_color('off')
+        time.sleep(0.01)
 
     def read(self):
         arr = self.dev.ctrl_transfer((0x01 << 5) | 0x80, 0x01, 0, 0, 1000)

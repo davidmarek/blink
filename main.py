@@ -5,4 +5,4 @@ import blink
 
 if __name__ == '__main__':
     led = blink.Blink()
-    led.set_color_name('violet')
+    led.blink((11, 0, 0), 0.1)
