@@ -21,15 +21,15 @@ void get_input() {
       
       DigiUSB.write(lastRead);
       
-      if (lastRead == '\n') {
+      colors[color++] = lastRead;
+      
+      if (color == 3) {
         analogWrite(RED, colors[RED]);
         analogWrite(GREEN, colors[GREEN]);
         analogWrite(BLUE, colors[BLUE]);
         color=0;
         break; // when we get a newline, break out of loop
-      } else {
-        colors[color++] = lastRead;
-      }
+      }      
     }
     
     // refresh the usb port for 10 milliseconds
